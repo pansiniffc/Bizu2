@@ -1,6 +1,7 @@
 import React from 'react';
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 import firebaseApp from '../firebase';
+import classes from '../styles/AddQuestao.module.css';
 
 const AddQuestao = () => {
   const [titulo, setTitulo] = React.useState('');
@@ -23,7 +24,6 @@ const AddQuestao = () => {
       resposta,
       opcoes,
     });
-    console.log({ pergunta });
   }
 
   return (

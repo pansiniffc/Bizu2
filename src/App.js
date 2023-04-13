@@ -5,7 +5,7 @@ import Questoes from './components/Questoes';
 function App() {
   return (
     <div>
-      <AddQuestao />
+      <Questoes />
     </div>
   );
 }
