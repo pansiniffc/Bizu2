@@ -7,37 +7,42 @@ const Questoes = () => {
   const [perguntas, setPerguntas] = React.useState('');
   const [respostas, setRespostas] = React.useState('');
   const [resultado, setResultado] = React.useState(null);
+  const [error, setError] = React.useState(null);
+  const [loading, setloading] = React.useState(null);
   const [slide, setSlide] = React.useState(0);
 
+  //Concetando com o Firebase
   const db = getFirestore(firebaseApp);
   const perguntasCollectionRef = collection(db, 'perguntas');
 
   //Carregando as perguntas do Firebase
   React.useEffect(() => {
     const getPerguntas = async () => {
-      const data = await getDocs(perguntasCollectionRef);
-      setPerguntas(
-        data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        })),
-      );
+      try {
+        setError(null);
+        setloading(true);
+        const data = await getDocs(perguntasCollectionRef);
+        setPerguntas(
+          data.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          })),
+        );
+      } catch (erro) {
+        setError('erro');
+      } finally {
+        setloading(false);
+      }
     };
     getPerguntas();
   }, []);
-  // Pegando os IDs das perguntas
-  // React.useEffect(() => {
-  //   const novosIds = perguntas.reduce((acumulador, pergunta, index) => {
-  //     acumulador[index] = pergunta.id;
-  //     return acumulador;
-  //   }, {});
-  //   if (novosIds !== null) setRespostas(novosIds);
-  // }, [perguntas]);
 
+  //Setando respostas com o id da alternativa selecionada
   function handleChange({ target }) {
     setRespostas({ ...respostas, [target.id]: target.value });
   }
 
+  //Calculando o resultado final
   function resultadoFinal() {
     const corretas = perguntas.filter(
       ({ id, resposta }) => respostas[id] === resposta,
@@ -46,6 +51,7 @@ const Questoes = () => {
     setResultado(`Você acertou: ${corretas.length} de ${perguntas.length}`);
   }
 
+  //Slide para aparecer uma questão por vez
   function handleClick() {
     if (slide < perguntas.length - 1) {
       setSlide(slide + 1);
@@ -55,6 +61,8 @@ const Questoes = () => {
     }
   }
 
+  if (error) return <p>{error}</p>;
+  if (loading) return <p>Carregando</p>;
   if (perguntas)
     return (
       <form onSubmit={(e) => e.preventDefault()}>
