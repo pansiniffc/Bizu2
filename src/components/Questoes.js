@@ -6,48 +6,74 @@ import Perguntas from './Perguntas';
 const Questoes = () => {
   const [perguntas, setPerguntas] = React.useState('');
   const [respostas, setRespostas] = React.useState('');
+  const [resultado, setResultado] = React.useState(null);
+  const [slide, setSlide] = React.useState(0);
 
   const db = getFirestore(firebaseApp);
   const perguntasCollectionRef = collection(db, 'perguntas');
 
   //Carregando as perguntas do Firebase
   React.useEffect(() => {
-    async function getPerguntas() {
+    const getPerguntas = async () => {
       const data = await getDocs(perguntasCollectionRef);
-      setPerguntas(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    }
+      setPerguntas(
+        data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        })),
+      );
+    };
     getPerguntas();
   }, []);
-
   // Pegando os IDs das perguntas
-  React.useEffect(() => {
-    setRespostas(
-      perguntas.reduce((acumulador, pergunta, index) => {
-        acumulador[index] = pergunta.id;
-        return acumulador;
-      }, {}),
-    );
-  }, [perguntas]);
-
-  // console.log(perguntas.map((pergunta) => pergunta.id));
-  // console.log(respostas);
+  // React.useEffect(() => {
+  //   const novosIds = perguntas.reduce((acumulador, pergunta, index) => {
+  //     acumulador[index] = pergunta.id;
+  //     return acumulador;
+  //   }, {});
+  //   if (novosIds !== null) setRespostas(novosIds);
+  // }, [perguntas]);
 
   function handleChange({ target }) {
     setRespostas({ ...respostas, [target.id]: target.value });
   }
 
-  return (
-    <form>
-      {perguntas.map((pergunta, index) => (
-        <Perguntas
-          key={pergunta.id}
-          value={respostas[pergunta.id]}
-          onChange={handleChange}
-          {...pergunta}
-        />
-      ))}
-    </form>
-  );
+  function resultadoFinal() {
+    const corretas = perguntas.filter(
+      ({ id, resposta }) => respostas[id] === resposta,
+      console.log(respostas),
+    );
+    setResultado(`Você acertou: ${corretas.length} de ${perguntas.length}`);
+  }
+
+  function handleClick() {
+    if (slide < perguntas.length - 1) {
+      setSlide(slide + 1);
+    } else {
+      setSlide(slide + 1);
+      resultadoFinal();
+    }
+  }
+
+  if (perguntas)
+    return (
+      <form onSubmit={(e) => e.preventDefault()}>
+        {perguntas.map((pergunta, index) => (
+          <Perguntas
+            active={slide === index}
+            key={pergunta.id}
+            value={respostas[pergunta.id]}
+            onChange={handleChange}
+            {...pergunta}
+          />
+        ))}
+        {resultado ? (
+          <p>{resultado}</p>
+        ) : (
+          <button onClick={handleClick}>Próxima</button>
+        )}
+      </form>
+    );
 };
 
 export default Questoes;

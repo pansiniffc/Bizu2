@@ -1,9 +1,10 @@
 import React from 'react';
 
-const Perguntas = ({ titulo, opcoes, onChange, value, id }) => {
+const Perguntas = ({ active, titulo, opcoes, onChange, value, id }) => {
+  if (active === false) return null;
   return (
     <div>
-      <h1>{titulo}</h1>
+      <p>{titulo}</p>
       {opcoes.map((opcao) => (
         <label key={opcao}>
           <input
