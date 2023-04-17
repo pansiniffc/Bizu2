@@ -1,0 +1,33 @@
+.header {
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, .1);
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+  background: white;
+  top: 0;
+}
+
+.nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+}
+
+.logo {
+  padding: .5rem;
+}
+
+.menu{
+  color: #333;
+  display: flex;
+  gap: .8rem;
+  align-items: center; 
+}
+
+.contato, .login {
+  padding: .8rem 1.2rem;
+  color: #333;
+}
+
+
