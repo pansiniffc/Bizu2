@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
 //firebase config
 const firebaseApp = initializeApp({
@@ -10,5 +11,6 @@ const firebaseApp = initializeApp({
   messagingSenderId: '820745172911',
   appId: '1:820745172911:web:78eee3ff3e1f3147aa215a',
 });
+export const auth = getAuth(firebaseApp);
 
 export default firebaseApp;
