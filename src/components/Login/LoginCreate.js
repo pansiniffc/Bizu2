@@ -1,26 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../Forms/Input';
 import Button from '../Forms/Button';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth } from '../../firebase';
+import { UserAuth } from '../../Contexts/AuthContext';
 
 const LoginCreate = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth);
+  const [error, setError] = React.useState('');
+  const { createUser } = UserAuth();
+  const navigate = useNavigate();
 
-  function handleSignIn(event) {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    createUserWithEmailAndPassword(email, password);
-  }
+    setError('');
+    try {
+      await createUser(email, password);
+      navigate('/conta');
+    } catch (err) {
+      setError(err.message);
+      console.log(err.message);
+    }
+  };
 
-  if (loading) return <p>Loading...</p>;
   return (
     <section>
       <h1>Criar Conta</h1>
-      <form action="" onSubmit={handleSignIn}>
+      <form action="" onSubmit={handleSubmit}>
         <Input
           label="Usuário"
           type="text"

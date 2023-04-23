@@ -8,18 +8,21 @@ import Footer from './components/Footer';
 import Contato from './components/Contato';
 import Home from './components/Home';
 import Login from './components/Login/Login';
+import { AuthContextProvider } from './Contexts/AuthContext';
 
 function App() {
   return (
     <div>
       <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login/*" element={<Login />} />
-          <Route path="/contato" element={<Contato />} />
-        </Routes>
-        <Footer />
+        <AuthContextProvider>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login/*" element={<Login />} />
+            <Route path="/contato" element={<Contato />} />
+          </Routes>
+          <Footer />
+        </AuthContextProvider>
       </BrowserRouter>
     </div>
   );
