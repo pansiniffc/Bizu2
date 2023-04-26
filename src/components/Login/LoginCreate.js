@@ -32,9 +32,9 @@ const LoginCreate = () => {
   };
 
   return (
-    <section className="container">
-      <h1 className="title">Criar Conta</h1>
+    <section className={`${styles.create} container`}>
       <form onSubmit={handleSubmit}>
+        <h1 className="title">Criar Conta</h1>
         <Input
           label="Nome do usuário"
           type="text"
