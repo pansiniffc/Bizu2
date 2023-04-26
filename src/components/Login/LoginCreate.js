@@ -5,6 +5,7 @@ import Button from '../Forms/Button';
 import { auth } from '../../firebase';
 import { updateProfile, createUserWithEmailAndPassword } from 'firebase/auth';
 import { UserAuth } from '../../Contexts/AuthContext';
+import styles from './LoginCreate.module.css';
 
 const LoginCreate = () => {
   const [email, setEmail] = React.useState('');
@@ -30,7 +31,7 @@ const LoginCreate = () => {
 
   return (
     <section>
-      <h1>Criar Conta</h1>
+      <h1 className="title">Criar Conta</h1>
       <form action="" onSubmit={handleSubmit}>
         <Input
           label="Nome do usuário"

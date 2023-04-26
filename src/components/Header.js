@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/Header.module.css';
 import { Link } from 'react-router-dom';
-import { ReactComponent as Bizu } from '../Assets/Logo.svg';
+// import { ReactComponent as Bizu } from '../Assets/Logo.svg';
 import { UserAuth } from '../Contexts/AuthContext';
 
 const Header = () => {
@@ -11,7 +11,7 @@ const Header = () => {
     <div className={styles.header}>
       <nav className={`${styles.nav} container`}>
         <Link className={styles.logo} to="/" aria-label="Bizu - Home">
-          <Bizu />
+          {/* <Bizu /> */}
         </Link>
         {user ? (
           <Link className={styles.login} to="/conta">
