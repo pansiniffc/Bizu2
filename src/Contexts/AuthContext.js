@@ -24,16 +24,6 @@ export const AuthContextProvider = ({ children }) => {
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
-  async function createUser(email, password) {
-    try {
-      setError(null);
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate('/conta');
-    } catch (err) {
-      setError(err.message);
-    }
-  }
-
   async function userLogin(email, password) {
     try {
       setError(null);
@@ -68,9 +58,7 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider
-      value={{ createUser, user, logout, userLogin, loading, error }}
-    >
+    <UserContext.Provider value={{ user, logout, userLogin, loading, error }}>
       {children}
     </UserContext.Provider>
   );
