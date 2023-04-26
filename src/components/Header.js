@@ -3,20 +3,9 @@ import styles from '../styles/Header.module.css';
 import { Link } from 'react-router-dom';
 import { ReactComponent as Bizu } from '../Assets/Logo.svg';
 import { UserAuth } from '../Contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const { user, logout } = UserAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate('/login');
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
 
   return (
     <div className={styles.header}>
@@ -26,8 +15,8 @@ const Header = () => {
         </Link>
         {user ? (
           <Link className={styles.login} to="/conta">
-            {user.email}
-            <button onClick={handleLogout}>Sair</button>
+            {user.displayName}
+            <button onClick={logout}>Sair</button>
           </Link>
         ) : (
           <Link className={styles.login} to="/login">
