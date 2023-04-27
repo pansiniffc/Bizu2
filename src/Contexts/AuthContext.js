@@ -3,7 +3,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 import {
@@ -19,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 const UserContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
@@ -27,8 +26,30 @@ export const AuthContextProvider = ({ children }) => {
   async function userLogin(email, password) {
     try {
       setError(null);
+      setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/conta');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function createLogin(email, password, displayName) {
+    try {
+      setError(null);
+      setLoading(true);
+      const userCredencial = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      const user = userCredencial.user;
+      await updateProfile(user, {
+        displayName: displayName,
+      });
+      userLogin(email, password);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -50,7 +71,6 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log(currentUser);
     });
     return () => {
       unsubscribe();
@@ -58,7 +78,9 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, logout, userLogin, loading, error }}>
+    <UserContext.Provider
+      value={{ user, logout, userLogin, loading, error, createLogin }}
+    >
       {children}
     </UserContext.Provider>
   );

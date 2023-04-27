@@ -9,6 +9,8 @@ import Contato from './components/Contato';
 import Home from './components/Home';
 import Login from './components/Login/Login';
 import { AuthContextProvider } from './Contexts/AuthContext';
+import ProtectedRoute from './components/Helper/ProtectedRoute';
+import User from './components/User/User';
 
 function App() {
   return (
@@ -19,7 +21,14 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login/*" element={<Login />} />
-            <Route path="/contato" element={<Contato />} />
+            <Route
+              path="/conta"
+              element={
+                <ProtectedRoute>
+                  <User />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
           <Footer />
         </AuthContextProvider>
