@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { UserAuth } from '../Contexts/AuthContext';
 
 const Header = () => {
-  const { user, logout } = UserAuth();
+  const { user } = UserAuth();
 
   return (
     <div className={styles.header}>
@@ -16,7 +16,6 @@ const Header = () => {
         {user ? (
           <Link className={styles.login} to="/conta">
             {user.displayName}
-            <button onClick={logout}>Sair</button>
           </Link>
         ) : (
           <Link className={styles.login} to="/login">
