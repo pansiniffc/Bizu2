@@ -1,7 +1,7 @@
 import React from 'react';
 import { getDocs, getFirestore, collection } from 'firebase/firestore';
-import firebaseApp from '../firebase';
-import Perguntas from './Perguntas';
+import firebaseApp from '../../firebase';
+import Perguntas from '../Perguntas';
 
 const Questoes = () => {
   const [perguntas, setPerguntas] = React.useState('');
